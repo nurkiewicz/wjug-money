@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesource.org/schema/mule/core/2.2"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	  xmlns:spring="http://www.springframework.org/schema/beans"
+	  xmlns:stdio="http://www.mulesource.org/schema/mule/stdio/2.2"
+	  xmlns:vm="http://www.mulesource.org/schema/mule/vm/2.2"
+	  xmlns:smtp="http://www.mulesource.org/schema/mule/smtp/2.2"
+	  xmlns:xmpp="http://www.mulesource.org/schema/mule/xmpp/2.2"
+	  xmlns:file="http://www.mulesource.org/schema/mule/file/2.2"
+	  xmlns:test="http://www.mulesource.org/schema/mule/test/2.2"
+	  xmlns:jms="http://www.mulesource.org/schema/mule/jms/2.2"
+	  xmlns:xm="http://www.mulesource.org/schema/mule/xml/2.2"
+	  xmlns:pop3="http://www.mulesource.org/schema/mule/pop3/2.2"
+	  xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.mulesource.org/schema/mule/core/2.2 http://www.mulesource.org/schema/mule/core/2.2/mule.xsd
+       http://www.mulesource.org/schema/mule/stdio/2.2 http://www.mulesource.org/schema/mule/stdio/2.2/mule-stdio.xsd
+       http://www.mulesource.org/schema/mule/vm/2.2 http://www.mulesource.org/schema/mule/vm/2.2/mule-vm.xsd
+       http://www.mulesource.org/schema/mule/smtp/2.2 http://www.mulesource.org/schema/mule/smtp/2.2/mule-smtp.xsd
+       http://www.mulesource.org/schema/mule/xmpp/2.2 http://www.mulesource.org/schema/mule/xmpp/2.2/mule-xmpp.xsd
+       http://www.mulesource.org/schema/mule/file/2.2 http://www.mulesource.org/schema/mule/file/2.2/mule-file.xsd
+       http://www.mulesource.org/schema/mule/test/2.2 http://www.mulesource.org/schema/mule/test/2.2/mule-test.xsd
+       http://www.mulesource.org/schema/mule/jms/2.2 http://www.mulesource.org/schema/mule/jms/2.2/mule-jms.xsd
+       http://www.mulesource.org/schema/mule/xml/2.2 http://www.mulesource.org/schema/mule/xml/2.2/mule-xml.xsd
+       http://www.mulesource.org/schema/mule/pop3/2.2 http://www.mulesource.org/schema/mule/pop3/2.2/mule-pop3.xsd
+       ">
+
+	<jms:connector name="JmsConnector"
+				   specification="1.1"
+				   jndiProviderUrl="tcp://localhost:61616"
+				   jndiInitialFactory="org.apache.activemq.jndi.ActiveMQInitialContextFactory"
+				   connectionFactoryJndiName="ConnectionFactory"/>
+
+	<pop3:connector name="Pop3Connector"
+					checkFrequency="5000"/>
+
+	<custom-transformer name="spreadsheetToMoneyTransferListTransformer"
+						class="com.blogspot.nurkiewicz.money.SpreadsheetToMoneyTransferListTransformer"/>
+
+	<custom-transformer name="csvToTransferListTransformer"
+						class="com.blogspot.nurkiewicz.money.CsvToTransferListTransformer"/>
+
+	<model name="MoneyTransferModel">
+
+		<service name="MoneyTransferInput">
+			<inbound>
+				<file:inbound-endpoint path="target/mule/input"
+									   moveToDirectory="target/mule/processed"
+									   pollingFrequency="10000">
+					<file:filename-wildcard-filter pattern="*.xls*"/>
+					<transformers>
+						<transformer ref="spreadsheetToMoneyTransferListTransformer"/>
+					</transformers>
+				</file:inbound-endpoint>
+				<pop3:inbound-endpoint user="moneytransfer"
+									   password="moneytransfer"
+									   host="localhost"
+									   port="110">
+					<transformers>
+						<custom-transformer class="org.mule.transport.email.transformers.EmailMessageToString"/>
+						<transformer ref="csvToTransferListTransformer"/>
+					</transformers>
+				</pop3:inbound-endpoint>
+			</inbound>
+			<outbound>
+				<list-message-splitter-router>
+					<jms:outbound-endpoint queue="MoneyTransfers">
+						<transformers>
+							<xm:object-to-xml-transformer/>
+							<message-properties-transformer>
+								<delete-message-property key="Content-Transfer-Encoding"/>
+								<delete-message-property key="Content-Type"/>
+								<delete-message-property key="Delivered-To"/>
+							</message-properties-transformer>
+							<custom-transformer class="org.mule.transport.jms.transformers.ObjectToJMSMessage"/>
+						</transformers>
+					</jms:outbound-endpoint>
+					<!--<smtp:outbound-endpoint from="moneytransfer@localhost"
+											to="tomek@localhost"
+											subject="Money transfer successfully loaded (#[mule:message.correlationId])"
+											host="localhost"
+											port="25">
+						<transformers>
+							<object-to-string-transformer/>
+							<custom-transformer class="org.mule.transport.email.transformers.ObjectToMimeMessage"/>
+						</transformers>
+					</smtp:outbound-endpoint>-->
+				</list-message-splitter-router>
+			</outbound>
+		</service>
+
+		<!--<service name="MoneyTransferProcessor">
+			<inbound>
+				<jms:inbound-endpoint queue="MoneyTransfers"/>
+			</inbound>
+			<outbound>
+				<multicasting-router>
+					<file:outbound-endpoint path="target/mule/processed"
+											outputPattern="#[DATE]-#[COUNT].xml">
+						<transformers>
+							<xm:object-to-xml-transformer/>
+						</transformers>
+					</file:outbound-endpoint>
+					<stdio:outbound-endpoint system="OUT"/>
+				</multicasting-router>
+			</outbound>
+		</service>-->
+
+		<!--<service name="HttpTransferInput">
+
+		</service>-->
+
+	</model>
+</mule>
