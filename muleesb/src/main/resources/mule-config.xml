@@ -31,31 +31,23 @@
 				   jndiInitialFactory="org.apache.activemq.jndi.ActiveMQInitialContextFactory"
 				   connectionFactoryJndiName="ConnectionFactory"/>
 
-	<pop3:connector name="Pop3Connector"
-					checkFrequency="5000"/>
+	<pop3:connector name="Pop3Connector" checkFrequency="5000"/>
 
-	<custom-transformer name="spreadsheetToMoneyTransferListTransformer"
-						class="com.blogspot.nurkiewicz.money.SpreadsheetToMoneyTransferListTransformer"/>
+	<custom-transformer name="spreadsheetToMoneyTransferListTransformer" class="com.blogspot.nurkiewicz.money.SpreadsheetToMoneyTransferListTransformer"/>
 
-	<custom-transformer name="csvToTransferListTransformer"
-						class="com.blogspot.nurkiewicz.money.CsvToTransferListTransformer"/>
+	<custom-transformer name="csvToTransferListTransformer" class="com.blogspot.nurkiewicz.money.CsvToTransferListTransformer"/>
 
 	<model name="MoneyTransferModel">
 
 		<service name="MoneyTransferInput">
 			<inbound>
-				<file:inbound-endpoint path="target/mule/input"
-									   moveToDirectory="target/mule/processed"
-									   pollingFrequency="10000">
+				<file:inbound-endpoint path="target/mule/input" moveToDirectory="target/mule/processed" pollingFrequency="10000">
 					<file:filename-wildcard-filter pattern="*.xls*"/>
 					<transformers>
 						<transformer ref="spreadsheetToMoneyTransferListTransformer"/>
 					</transformers>
 				</file:inbound-endpoint>
-				<pop3:inbound-endpoint user="moneytransfer"
-									   password="moneytransfer"
-									   host="localhost"
-									   port="110">
+				<pop3:inbound-endpoint user="moneytransfer" password="moneytransfer" host="localhost" port="110">
 					<transformers>
 						<custom-transformer class="org.mule.transport.email.transformers.EmailMessageToString"/>
 						<transformer ref="csvToTransferListTransformer"/>
@@ -67,12 +59,12 @@
 					<jms:outbound-endpoint queue="MoneyTransfers">
 						<transformers>
 							<xm:object-to-xml-transformer/>
-							<message-properties-transformer>
+							<custom-transformer class="org.mule.transport.jms.transformers.ObjectToJMSMessage"/>
+							<!--<message-properties-transformer>
 								<delete-message-property key="Content-Transfer-Encoding"/>
 								<delete-message-property key="Content-Type"/>
 								<delete-message-property key="Delivered-To"/>
-							</message-properties-transformer>
-							<custom-transformer class="org.mule.transport.jms.transformers.ObjectToJMSMessage"/>
+							</message-properties-transformer>-->
 						</transformers>
 					</jms:outbound-endpoint>
 					<!--<smtp:outbound-endpoint from="moneytransfer@localhost"
