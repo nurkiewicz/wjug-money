@@ -1,5 +1,6 @@
 package com.blogspot.nurkiewicz.money;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.mule.api.MuleContext;
 import org.mule.api.config.ConfigurationBuilder;
 import org.mule.config.spring.SpringXmlConfigurationBuilder;
@@ -21,7 +22,7 @@ public class MuleStartup {
 			MuleContext context = new DefaultMuleContextFactory().createMuleContext(configurationBuilder);
 			context.start();
 		} catch (Exception e) {
-			log.error("", e);
+			log.error("Mule ESB startup failed", e);
 		}
 	}
 
