@@ -1,16 +1,17 @@
 package com.blogspot.nurkiewicz.money;
 
+import org.junit.Before;
+import org.junit.Test;
+import org.mule.api.transformer.Transformer;
+import org.mule.api.transformer.TransformerException;
+
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
-import org.junit.Before;
-import org.junit.Test;
-import org.mule.api.transformer.Transformer;
-import org.mule.api.transformer.TransformerException;
+import static org.fest.assertions.Assertions.assertThat;
+
 
 /**
  * @author Tomasz Nurkiewicz
@@ -45,7 +46,7 @@ public class SpreadsheetToMoneyTransferListTransformerTest {
 		List<MoneyTransfer> transferList = (List<MoneyTransfer>) transformer.transform(inputStream);
 
 		//then
-		assertThat(transferList, equalTo(Collections.<MoneyTransfer>emptyList()));
+		assertThat(transferList).isEqualTo(Collections.<MoneyTransfer>emptyList());
 	}
 
 	@Test
@@ -57,7 +58,7 @@ public class SpreadsheetToMoneyTransferListTransformerTest {
 		List<MoneyTransfer> transferList = (List<MoneyTransfer>) transformer.transform(inputStream);
 
 		//then
-		assertThat(transferList, equalTo(Collections.<MoneyTransfer>emptyList()));
+		assertThat(transferList).isEqualTo(Collections.<MoneyTransfer>emptyList());
 	}
 
 	@Test
@@ -69,8 +70,8 @@ public class SpreadsheetToMoneyTransferListTransformerTest {
 		List<MoneyTransfer> transferList = (List<MoneyTransfer>) transformer.transform(inputStream);
 
 		//then
-		assertThat(transferList.size(), equalTo(1));
-		assertThat(transferList.get(0), equalTo(new MoneyTransfer("Acme corp.", "40 8989 7878 6767 5656 5656", BigDecimal.valueOf(1250.90))));
+		assertThat(transferList).hasSize(1);
+		assertThat(transferList.get(0)).isEqualTo(new MoneyTransfer("Acme corp.", "40 8989 7878 6767 5656 5656", BigDecimal.valueOf(1250.90)));
 	}
 
 	@Test
@@ -82,10 +83,10 @@ public class SpreadsheetToMoneyTransferListTransformerTest {
 		List<MoneyTransfer> transferList = (List<MoneyTransfer>) transformer.transform(inputStream);
 
 		//then
-		assertThat(transferList.size(), equalTo(3));
-		assertThat(transferList.get(0), equalTo(new MoneyTransfer("Acme corp.", "56 6757 5646 4535 3424 2423", BigDecimal.valueOf(1250.90))));
-		assertThat(transferList.get(1), equalTo(new MoneyTransfer("Charity donation", "87 6666 4444 5555 8888 9999", BigDecimal.valueOf((double) 900))));
-		assertThat(transferList.get(2), equalTo(new MoneyTransfer("Example.com", "20 9988 6644 9876 4567 8767", BigDecimal.valueOf(1786.35))));
+		assertThat(transferList).hasSize(3);
+		assertThat(transferList.get(0)).isEqualTo(new MoneyTransfer("Acme corp.", "56 6757 5646 4535 3424 2423", BigDecimal.valueOf(1250.90)));
+		assertThat(transferList.get(1)).isEqualTo(new MoneyTransfer("Charity donation", "87 6666 4444 5555 8888 9999", BigDecimal.valueOf((double) 900)));
+		assertThat(transferList.get(2)).isEqualTo(new MoneyTransfer("Example.com", "20 9988 6644 9876 4567 8767", BigDecimal.valueOf(1786.35)));
 	}
 
 }

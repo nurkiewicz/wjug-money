@@ -1,5 +1,6 @@
 package com.blogspot.nurkiewicz.money;
 
+import org.fest.assertions.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mule.api.transformer.Transformer;
@@ -7,8 +8,8 @@ import org.mule.api.transformer.Transformer;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.fest.assertions.Assertions.assertThat;
+
 
 /**
  * @author Tomasz Nurkiewicz
@@ -31,7 +32,7 @@ public class CsvToTransferListTransformerTest {
 		List<MoneyTransfer> list = (List<MoneyTransfer>) transformer.transform(input);
 
 		//then
-		assertThat(list.size(), equalTo(0));
+		assertThat(list).isEmpty();
 	}
 
 	@Test
@@ -42,7 +43,7 @@ public class CsvToTransferListTransformerTest {
 		List<MoneyTransfer> list = (List<MoneyTransfer>) transformer.transform(input);
 
 		//then
-		assertThat(list.size(), equalTo(0));
+		assertThat(list).isEmpty();
 	}
 
 	@Test
@@ -53,7 +54,7 @@ public class CsvToTransferListTransformerTest {
 		List<MoneyTransfer> list = (List<MoneyTransfer>) transformer.transform(input);
 
 		//then
-		assertThat(list.size(), equalTo(0));
+		assertThat(list).isEmpty();
 	}
 
 	@Test
@@ -64,7 +65,7 @@ public class CsvToTransferListTransformerTest {
 		List<MoneyTransfer> list = (List<MoneyTransfer>) transformer.transform(input);
 
 		//then
-		assertThat(list.size(), equalTo(0));
+		assertThat(list).isEmpty();
 	}
 
 	@Test
@@ -75,8 +76,8 @@ public class CsvToTransferListTransformerTest {
 		List<MoneyTransfer> list = (List<MoneyTransfer>) transformer.transform(input);
 
 		//then
-		assertThat(list.size(), equalTo(1));
-		assertThat(list.get(0), equalTo(new MoneyTransfer("Name", "1234 1234", BigDecimal.valueOf(123.45))));
+		assertThat(list.size()).isEqualTo(1);
+		assertThat(list.get(0)).isEqualTo(new MoneyTransfer("Name", "1234 1234", BigDecimal.valueOf(123.45)));
 	}
 
 	@Test
@@ -87,8 +88,8 @@ public class CsvToTransferListTransformerTest {
 		List<MoneyTransfer> list = (List<MoneyTransfer>) transformer.transform(input);
 
 		//then
-		assertThat(list.size(), equalTo(1));
-		assertThat(list.get(0), equalTo(new MoneyTransfer("Name", "1234 1234", BigDecimal.valueOf(123.45))));
+		assertThat(list.size()).isEqualTo(1);
+		assertThat(list.get(0)).isEqualTo(new MoneyTransfer("Name", "1234 1234", BigDecimal.valueOf(123.45)));
 	}
 
 	@Test
@@ -99,10 +100,10 @@ public class CsvToTransferListTransformerTest {
 		List<MoneyTransfer> list = (List<MoneyTransfer>) transformer.transform(input);
 
 		//then
-		assertThat(list.size(), equalTo(3));
-		assertThat(list.get(0), equalTo(new MoneyTransfer("Name 1", "1234 4567", BigDecimal.valueOf(123.45))));
-		assertThat(list.get(1), equalTo(new MoneyTransfer("Name 2", "3456 5432", BigDecimal.valueOf(12.70))));
-		assertThat(list.get(2), equalTo(new MoneyTransfer("Name 3", "9988 6677", BigDecimal.valueOf(76.49))));
+		assertThat(list.size()).isEqualTo(3);
+		assertThat(list.get(0)).isEqualTo(new MoneyTransfer("Name 1", "1234 4567", BigDecimal.valueOf(123.45)));
+		assertThat(list.get(1)).isEqualTo(new MoneyTransfer("Name 2", "3456 5432", BigDecimal.valueOf(12.70)));
+		assertThat(list.get(2)).isEqualTo(new MoneyTransfer("Name 3", "9988 6677", BigDecimal.valueOf(76.49)));
 	}
 
 	@Test
@@ -113,8 +114,8 @@ public class CsvToTransferListTransformerTest {
 		List<MoneyTransfer> list = (List<MoneyTransfer>) transformer.transform(input);
 
 		//then
-		assertThat(list.size(), equalTo(1));
-		assertThat(list.get(0), equalTo(new MoneyTransfer("Name 5", "1234 9955", BigDecimal.valueOf(98.56))));
+		assertThat(list.size()).isEqualTo(1);
+		assertThat(list.get(0)).isEqualTo(new MoneyTransfer("Name 5", "1234 9955", BigDecimal.valueOf(98.56)));
 	}
 
 }
