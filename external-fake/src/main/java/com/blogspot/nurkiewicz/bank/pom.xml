@@ -5,10 +5,14 @@
 
 	<parent>
 		<groupId>com.google.groups.warszawa-jug.money</groupId>
-		<artifactId>money</artifactId>
+		<artifactId>app</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>servicemix</artifactId>
-	<name>Money transfer ServiceMix example</name>
+	<artifactId>muleesb</artifactId>
+	<name>External banking systems fake</name>
+	<author>Tomasz Nurkiewicz</author>
+
+	<dependencies>
+	</dependencies>
 
 </project>

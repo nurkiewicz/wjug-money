@@ -3,7 +3,7 @@
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.google.groups.warszawa-jug.money</groupId>
-	<artifactId>app</artifactId>
+	<artifactId>money</artifactId>
 	<packaging>pom</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Mule ESB vs. Apache ServiceMix - Warszawa JUG</name>
@@ -14,6 +14,7 @@
 		<module>muleesb</module>
 		<module>servicemix</module>
 		<module>api</module>
+		<module>external-fake</module>
 	</modules>
 	<build>
 		<plugins>

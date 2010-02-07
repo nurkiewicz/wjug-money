@@ -5,7 +5,7 @@
 
 	<parent>
 		<groupId>com.google.groups.warszawa-jug.money</groupId>
-		<artifactId>app</artifactId>
+		<artifactId>money</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>muleesb</artifactId>
