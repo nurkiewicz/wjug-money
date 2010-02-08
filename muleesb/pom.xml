@@ -17,6 +17,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>com.google.groups.warszawa-jug.money</groupId>
+			<artifactId>api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.mule</groupId>
 			<artifactId>mule-core</artifactId>
 			<version>${muleVersion}</version>
@@ -267,6 +272,16 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 			<version>0.9.18</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
+			<version>1.5.8</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+			<version>1.5.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>

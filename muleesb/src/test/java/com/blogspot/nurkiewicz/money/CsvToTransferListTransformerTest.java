@@ -1,6 +1,6 @@
 package com.blogspot.nurkiewicz.money;
 
-import org.fest.assertions.Assert;
+import com.google.groups.warszawajug.money.MoneyTransfer;
 import org.junit.Before;
 import org.junit.Test;
 import org.mule.api.transformer.Transformer;

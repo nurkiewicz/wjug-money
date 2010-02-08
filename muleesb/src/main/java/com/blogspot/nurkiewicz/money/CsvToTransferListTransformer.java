@@ -1,5 +1,6 @@
 package com.blogspot.nurkiewicz.money;
 
+import com.google.groups.warszawajug.money.MoneyTransfer;
 import org.mule.api.transformer.TransformerException;
 import org.mule.transformer.AbstractTransformer;
 import org.slf4j.Logger;

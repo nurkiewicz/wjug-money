@@ -25,11 +25,17 @@
        http://www.mulesource.org/schema/mule/pop3/2.2 http://www.mulesource.org/schema/mule/pop3/2.2/mule-pop3.xsd
        ">
 
+	<spring:beans>
+		<spring:import resource="spring/beans.xml"/>
+	</spring:beans>
+
 	<jms:connector name="JmsConnector"
 				   specification="1.1"
 				   jndiProviderUrl="tcp://localhost:61616"
 				   jndiInitialFactory="org.apache.activemq.jndi.ActiveMQInitialContextFactory"
 				   connectionFactoryJndiName="ConnectionFactory"/>
+
+	<stdio:connector name="StdioConnector" promptMessage="Enter something: " messageDelayTime="500"/>
 
 	<pop3:connector name="Pop3Connector" checkFrequency="5000"/>
 
@@ -41,7 +47,7 @@
 
 		<service name="MoneyTransferInput">
 			<inbound>
-				<file:inbound-endpoint path="target/mule/input" moveToDirectory="target/mule/processed" pollingFrequency="10000">
+				<file:inbound-endpoint path="target/mule/input" moveToDirectory="target/mule/processed" pollingFrequency="10000" transformer-refs="spreadsheetToMoneyTransferListTransformer">
 					<file:filename-wildcard-filter pattern="*.xls*"/>
 					<transformers>
 						<transformer ref="spreadsheetToMoneyTransferListTransformer"/>
@@ -103,4 +109,26 @@
 		</service>-->
 
 	</model>
+
+	<model name="FakeModel">
+		<service name="FakeMoneyTransferQueueService">
+			<inbound>
+				<jms:inbound-endpoint queue="MoneyTransfers">
+					<transformers>
+						<custom-transformer class="org.mule.transport.jms.transformers.JMSMessageToObject"/>
+						<xm:xml-to-object-transformer/>
+					</transformers>
+				</jms:inbound-endpoint>
+			</inbound>
+			<component>
+				<spring-object bean="fakeMoneyTransferProcessor"/>
+			</component>
+			<outbound>
+				<pass-through-router>
+					<jms:outbound-endpoint queue="MoneyTransfersAck"/>
+				</pass-through-router>
+			</outbound>
+		</service>
+	</model>
+
 </mule>

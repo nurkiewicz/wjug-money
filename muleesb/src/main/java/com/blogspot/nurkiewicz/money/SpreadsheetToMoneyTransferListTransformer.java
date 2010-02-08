@@ -2,10 +2,10 @@ package com.blogspot.nurkiewicz.money;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.groups.warszawajug.money.MoneyTransfer;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
