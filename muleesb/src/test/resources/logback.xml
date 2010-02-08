@@ -11,6 +11,8 @@
 	<logger name="org.mule" level="INFO"/>
 	<logger name="org.apache.commons" level="INFO"/>
 	<logger name="org.apache.activemq" level="INFO"/>
+	<logger name="org.apache.cxf" level="INFO"/>
+	<logger name="httpclient" level="INFO"/>
 	<logger name="org.subethamail" level="INFO"/>
 
 	<root level="ALL">
