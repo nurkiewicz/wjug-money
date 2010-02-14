@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author Tomasz Nurkiewicz
- * @since 6.3.0 (CR-7763), 2010-02-08, 20:19:28
+ * @since 2010-02-08, 20:19:28
  */
 public class FakeMoneyTransferProcessor {
 

@@ -1,36 +1,27 @@
 package com.google.groups.warszawajug.money;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
+
 /**
  * @author Tomasz Nurkiewicz
- * @since 2010-01-05, 20:25:00
  */
 public class MoneyTransfer implements Serializable {
 
-	private String name;
 	private String accountNo;
 	private BigDecimal amount;
+	private AccountOwner accountOwner;
+	private Bank ownerBank;
 
 	public MoneyTransfer() {
 	}
 
-	public MoneyTransfer(String name, String accountNo, BigDecimal amount) {
-		this.name = name;
+	public MoneyTransfer(String accountNo, BigDecimal amount) {
 		this.accountNo = accountNo;
 		this.amount = amount;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getAccountNo() {
@@ -49,12 +40,29 @@ public class MoneyTransfer implements Serializable {
 		this.amount = amount;
 	}
 
+	public AccountOwner getAccountOwner() {
+		return accountOwner;
+	}
+
+	public void setAccountOwner(AccountOwner accountOwner) {
+		this.accountOwner = accountOwner;
+	}
+
+	public Bank getOwnerBank() {
+		return ownerBank;
+	}
+
+	public void setOwnerBank(Bank ownerBank) {
+		this.ownerBank = ownerBank;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).
-				append("name", name).
 				append("accountNo", accountNo).
 				append("amount", amount).
+				append("accountOwner", accountOwner).
+				append("ownerBank", ownerBank).
 				toString();
 	}
 
@@ -66,17 +74,19 @@ public class MoneyTransfer implements Serializable {
 		MoneyTransfer that = (MoneyTransfer) o;
 
 		if(accountNo != null ? !accountNo.equals(that.accountNo) : that.accountNo != null) return false;
+		if(accountOwner != null ? !accountOwner.equals(that.accountOwner) : that.accountOwner != null) return false;
 		if(amount != null ? amount.compareTo(that.amount) != 0 : that.amount != null) return false;
-		if(name != null ? !name.equals(that.name) : that.name != null) return false;
+		if(ownerBank != null ? !ownerBank.equals(that.ownerBank) : that.ownerBank != null) return false;
 
 		return true;
 	}
 
 	@Override
 	public int hashCode() {
-		int result = name != null ? name.hashCode() : 0;
-		result = 31 * result + (accountNo != null ? accountNo.hashCode() : 0);
+		int result = accountNo != null ? accountNo.hashCode() : 0;
 		result = 31 * result + (amount != null ? amount.hashCode() : 0);
+		result = 31 * result + (accountOwner != null ? accountOwner.hashCode() : 0);
+		result = 31 * result + (ownerBank != null ? ownerBank.hashCode() : 0);
 		return result;
 	}
 }

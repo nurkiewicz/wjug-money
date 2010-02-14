@@ -49,28 +49,23 @@ public class SpreadsheetToMoneyTransferListTransformer extends AbstractTransform
 	private MoneyTransfer parseRow(Row row) {
 		try {
 			log.debug("Processing row: {}", row.getRowNum() + 1);
-			if(row.getLastCellNum() != 3){
+			if(row.getLastCellNum() != 2){
 				log.warn("Row {} does not have exactly 3 columns but {}", row.getRowNum(), row.getLastCellNum() + 1);
 				return null;
 			}
 			if (row.getCell(0).getCellType() != Cell.CELL_TYPE_STRING) {
-				log.warn("Name column is not of String type but: {}", row.getCell(0).getCellType());
+				log.warn("Account number column is not of String type but: {}", row.getCell(0).getCellType());
 				return null;
 			}
-			if (row.getCell(1).getCellType() != Cell.CELL_TYPE_STRING) {
-				log.warn("Account number column is not of String type but: {}", row.getCell(1).getCellType());
+			if (row.getCell(1).getCellType() != Cell.CELL_TYPE_NUMERIC) {
+				log.warn("Money transfer amount is not of number type but: {}", row.getCell(1).getCellType());
 				return null;
 			}
-			if (row.getCell(2).getCellType() != Cell.CELL_TYPE_NUMERIC) {
-				log.warn("Money transfer amount is not of number type but: {}", row.getCell(2).getCellType());
-				return null;
-			}
-			final String name = row.getCell(0).getRichStringCellValue().getString();
-			final String accountNo = row.getCell(1).getRichStringCellValue().getString();
-			final double amountNumber = row.getCell(2).getNumericCellValue();
+			final String accountNo = row.getCell(0).getRichStringCellValue().getString();
+			final double amountNumber = row.getCell(1).getNumericCellValue();
 			BigDecimal amount = new BigDecimal((long)(amountNumber * 100));
 			amount = amount.divide(BigDecimal.valueOf(100));
-			return new MoneyTransfer(name, accountNo, amount);
+			return new MoneyTransfer(accountNo, amount);
 		} catch (Exception e) {
 			log.warn("Exception while processing the row", e);
 			return null;

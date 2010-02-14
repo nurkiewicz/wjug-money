@@ -11,6 +11,7 @@
 	  xmlns:jms="http://www.mulesource.org/schema/mule/jms/2.2"
 	  xmlns:xm="http://www.mulesource.org/schema/mule/xml/2.2"
 	  xmlns:pop3="http://www.mulesource.org/schema/mule/pop3/2.2"
+	  xmlns:ejb="http://www.mulesource.org/schema/mule/ejb/2.2"
 	  xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
        http://www.mulesource.org/schema/mule/core/2.2 http://www.mulesource.org/schema/mule/core/2.2/mule.xsd
@@ -23,13 +24,14 @@
        http://www.mulesource.org/schema/mule/jms/2.2 http://www.mulesource.org/schema/mule/jms/2.2/mule-jms.xsd
        http://www.mulesource.org/schema/mule/xml/2.2 http://www.mulesource.org/schema/mule/xml/2.2/mule-xml.xsd
        http://www.mulesource.org/schema/mule/pop3/2.2 http://www.mulesource.org/schema/mule/pop3/2.2/mule-pop3.xsd
+       http://www.mulesource.org/schema/mule/ejb/2.2 http://www.mulesource.org/schema/mule/ejb/2.2/mule-ejb.xsd
        ">
 
 	<spring:beans>
 		<spring:import resource="spring/beans.xml"/>
 	</spring:beans>
 
-	<jms:connector name="JmsConnector"
+	<jms:connector name="JmsActiveMQConnector"
 				   specification="1.1"
 				   jndiProviderUrl="tcp://localhost:61616"
 				   jndiInitialFactory="org.apache.activemq.jndi.ActiveMQInitialContextFactory"
@@ -47,7 +49,7 @@
 
 		<service name="MoneyTransferInput">
 			<inbound>
-				<file:inbound-endpoint path="target/mule/input" moveToDirectory="target/mule/processed" pollingFrequency="10000" transformer-refs="spreadsheetToMoneyTransferListTransformer">
+				<file:inbound-endpoint path="target/mule/input" moveToDirectory="target/mule/processed" pollingFrequency="1000">
 					<file:filename-wildcard-filter pattern="*.xls*"/>
 					<transformers>
 						<transformer ref="spreadsheetToMoneyTransferListTransformer"/>
@@ -87,26 +89,29 @@
 			</outbound>
 		</service>
 
-		<!--<service name="MoneyTransferProcessor">
+		<service name="MoneyTransferProcessor">
 			<inbound>
-				<jms:inbound-endpoint queue="MoneyTransfers"/>
+				<jms:inbound-endpoint queue="MoneyTransfersAck">
+					<transformers>
+						<custom-transformer class="org.mule.transport.jms.transformers.JMSMessageToObject"/>
+						<xm:xml-to-object-transformer/>
+					</transformers>
+				</jms:inbound-endpoint>
 			</inbound>
+			<component>
+				<spring-object bean="transferHandler"/>
+			</component>
 			<outbound>
 				<multicasting-router>
-					<file:outbound-endpoint path="target/mule/processed"
+					<file:outbound-endpoint path="target/mule/confirmations"
 											outputPattern="#[DATE]-#[COUNT].xml">
 						<transformers>
 							<xm:object-to-xml-transformer/>
 						</transformers>
 					</file:outbound-endpoint>
-					<stdio:outbound-endpoint system="OUT"/>
 				</multicasting-router>
 			</outbound>
-		</service>-->
-
-		<!--<service name="HttpTransferInput">
-
-		</service>-->
+		</service>
 
 	</model>
 
@@ -125,7 +130,12 @@
 			</component>
 			<outbound>
 				<pass-through-router>
-					<jms:outbound-endpoint queue="MoneyTransfersAck"/>
+					<jms:outbound-endpoint queue="MoneyTransfersAck">
+						<transformers>
+							<xm:object-to-xml-transformer/>
+							<custom-transformer class="org.mule.transport.jms.transformers.ObjectToJMSMessage"/>
+						</transformers>
+					</jms:outbound-endpoint>
 				</pass-through-router>
 			</outbound>
 		</service>

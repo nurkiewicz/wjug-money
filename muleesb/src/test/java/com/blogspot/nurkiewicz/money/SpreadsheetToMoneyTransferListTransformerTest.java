@@ -72,11 +72,11 @@ public class SpreadsheetToMoneyTransferListTransformerTest {
 
 		//then
 		assertThat(transferList).hasSize(1);
-		assertThat(transferList.get(0)).isEqualTo(new MoneyTransfer("Acme corp.", "40 8989 7878 6767 5656 5656", BigDecimal.valueOf(1250.90)));
+		assertThat(transferList.get(0)).isEqualTo(new MoneyTransfer("40 8989 7878 6767 5656 5656", BigDecimal.valueOf(1250.90)));
 	}
 
 	@Test
-	public void shouldReturnMultipleTransfer() throws Exception {
+	public void shouldReturnMultipleTransfers() throws Exception {
 		//given
 		InputStream inputStream = getClass().getResourceAsStream("multiple.xls");
 
@@ -85,9 +85,9 @@ public class SpreadsheetToMoneyTransferListTransformerTest {
 
 		//then
 		assertThat(transferList).hasSize(3);
-		assertThat(transferList.get(0)).isEqualTo(new MoneyTransfer("Acme corp.", "56 6757 5646 4535 3424 2423", BigDecimal.valueOf(1250.90)));
-		assertThat(transferList.get(1)).isEqualTo(new MoneyTransfer("Charity donation", "87 6666 4444 5555 8888 9999", BigDecimal.valueOf((double) 900)));
-		assertThat(transferList.get(2)).isEqualTo(new MoneyTransfer("Example.com", "20 9988 6644 9876 4567 8767", BigDecimal.valueOf(1786.35)));
+		assertThat(transferList.get(0)).isEqualTo(new MoneyTransfer("56 6757 5646 4535 3424 2423", BigDecimal.valueOf(1250.90)));
+		assertThat(transferList.get(1)).isEqualTo(new MoneyTransfer("87 6666 4444 5555 8888 9999", BigDecimal.valueOf((double) 900)));
+		assertThat(transferList.get(2)).isEqualTo(new MoneyTransfer("20 9988 6644 9876 4567 8767", BigDecimal.valueOf(1786.35)));
 	}
 
 }

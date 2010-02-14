@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 /**
  * @author Tomasz Nurkiewicz
- * @since 6.0.13, 2010-01-08, 23:54:41
+ * @since 2010-01-08, 23:54:41
  */
 public class CsvToTransferListTransformer extends AbstractTransformer {
 
@@ -40,17 +40,16 @@ public class CsvToTransferListTransformer extends AbstractTransformer {
 	private MoneyTransfer process(String line) {
 		log.debug("Processing line: '{}'", line);
 		final String[] parts = line.split(";");
-		if(parts.length != 3) {
-			log.info("Line does not contain three sections separated with semicolon");
+		if(parts.length != 2) {
+			log.info("Line does not contain two sections separated with semicolon");
 			return null;
 		}
 		try {
-			final String name = parts[0].trim();
-			final String accountNo = parts[1].trim();
-			final BigDecimal amount = new BigDecimal(parts[2].trim());
-			return new MoneyTransfer(name, accountNo, amount);
+			final String accountNo = parts[0].trim();
+			final BigDecimal amount = new BigDecimal(parts[1].trim());
+			return new MoneyTransfer(accountNo, amount);
 		} catch(NumberFormatException e) {
-			log.warn("Can't parse amount: '{}'", parts[2].trim());
+			log.warn("Can't parse amount: '{}'", parts[1].trim());
 			return null;
 		}
 	}

@@ -8,8 +8,10 @@
 	   ">
 
 	<bean name="fakeMoneyTransferProcessor" class="com.blogspot.nurkiewicz.money.FakeMoneyTransferProcessor">
-		<property name="delay" value="5000"/>
+		<property name="delay" value="1000"/>
 	</bean>
+	<bean id="transferHandler" class="com.blogspot.nurkiewicz.money.TransferHandler"/>
+
 
 	<context:annotation-config/>
 
