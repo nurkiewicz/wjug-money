@@ -12,6 +12,7 @@
 	  xmlns:xm="http://www.mulesource.org/schema/mule/xml/2.2"
 	  xmlns:pop3="http://www.mulesource.org/schema/mule/pop3/2.2"
 	  xmlns:ejb="http://www.mulesource.org/schema/mule/ejb/2.2"
+	  xmlns:cxf="http://www.mulesource.org/schema/mule/cxf/2.2"
 	  xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
        http://www.mulesource.org/schema/mule/core/2.2 http://www.mulesource.org/schema/mule/core/2.2/mule.xsd
@@ -25,6 +26,7 @@
        http://www.mulesource.org/schema/mule/xml/2.2 http://www.mulesource.org/schema/mule/xml/2.2/mule-xml.xsd
        http://www.mulesource.org/schema/mule/pop3/2.2 http://www.mulesource.org/schema/mule/pop3/2.2/mule-pop3.xsd
        http://www.mulesource.org/schema/mule/ejb/2.2 http://www.mulesource.org/schema/mule/ejb/2.2/mule-ejb.xsd
+       http://www.mulesource.org/schema/mule/cxf/2.2 http://www.mulesource.org/schema/mule/cxf/2.2/mule-cxf.xsd
        ">
 
 	<spring:beans>
@@ -49,7 +51,7 @@
 
 		<service name="MoneyTransferInput">
 			<inbound>
-				<file:inbound-endpoint path="target/mule/input" moveToDirectory="target/mule/processed" pollingFrequency="1000">
+				<file:inbound-endpoint path="target/mule/input" pollingFrequency="1000">
 					<file:filename-wildcard-filter pattern="*.xls*"/>
 					<transformers>
 						<transformer ref="spreadsheetToMoneyTransferListTransformer"/>
@@ -100,11 +102,13 @@
 			</inbound>
 			<component>
 				<spring-object bean="transferHandler"/>
+				<binding interface="com.google.groups.warszawajug.money.CustomerWs">
+					<outbound-endpoint address="wsdl-cxf:http://localhost:8080/external-fake-0.0.1-SNAPSHOT/CustomerWsBean?wsdl"/>
+				</binding>
 			</component>
 			<outbound>
 				<multicasting-router>
-					<file:outbound-endpoint path="target/mule/confirmations"
-											outputPattern="#[DATE]-#[COUNT].xml">
+					<file:outbound-endpoint path="target/mule/confirmations" outputPattern="#[DATE]-#[COUNT].xml">
 						<transformers>
 							<xm:object-to-xml-transformer/>
 						</transformers>

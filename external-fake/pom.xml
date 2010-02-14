@@ -10,8 +10,27 @@
 	</parent>
 	<artifactId>external-fake</artifactId>
 	<name>External banking systems fake</name>
+	<description>JEE application ready to be deployed on application server. Tested on JBoss 5.1.0. Needs api artifact available on CLASSPATH</description>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.google.groups.warszawa-jug.money</groupId>
+			<artifactId>api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-ejb_3.0_spec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easytesting</groupId>
+			<artifactId>fest-assert</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>
