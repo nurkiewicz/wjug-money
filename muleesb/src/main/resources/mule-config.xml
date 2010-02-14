@@ -13,6 +13,7 @@
 	  xmlns:pop3="http://www.mulesource.org/schema/mule/pop3/2.2"
 	  xmlns:ejb="http://www.mulesource.org/schema/mule/ejb/2.2"
 	  xmlns:cxf="http://www.mulesource.org/schema/mule/cxf/2.2"
+	  xmlns:ftp="http://www.mulesource.org/schema/mule/ftp/2.2"
 	  xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
        http://www.mulesource.org/schema/mule/core/2.2 http://www.mulesource.org/schema/mule/core/2.2/mule.xsd
@@ -27,6 +28,7 @@
        http://www.mulesource.org/schema/mule/pop3/2.2 http://www.mulesource.org/schema/mule/pop3/2.2/mule-pop3.xsd
        http://www.mulesource.org/schema/mule/ejb/2.2 http://www.mulesource.org/schema/mule/ejb/2.2/mule-ejb.xsd
        http://www.mulesource.org/schema/mule/cxf/2.2 http://www.mulesource.org/schema/mule/cxf/2.2/mule-cxf.xsd
+       http://www.mulesource.org/schema/mule/ftp/2.2 http://www.mulesource.org/schema/mule/ftp/2.2/mule-ftp.xsd
        ">
 
 	<spring:beans>
@@ -39,9 +41,9 @@
 				   jndiInitialFactory="org.apache.activemq.jndi.ActiveMQInitialContextFactory"
 				   connectionFactoryJndiName="ConnectionFactory"/>
 
-	<stdio:connector name="StdioConnector" promptMessage="Enter something: " messageDelayTime="500"/>
-
 	<pop3:connector name="Pop3Connector" checkFrequency="5000"/>
+
+	<!--<ejb:connector name="JBossConnector" />-->
 
 	<custom-transformer name="spreadsheetToMoneyTransferListTransformer" class="com.blogspot.nurkiewicz.money.SpreadsheetToMoneyTransferListTransformer"/>
 
@@ -105,6 +107,9 @@
 				<binding interface="com.google.groups.warszawajug.money.CustomerWs">
 					<outbound-endpoint address="wsdl-cxf:http://localhost:8080/external-fake-0.0.1-SNAPSHOT/CustomerWsBean?wsdl"/>
 				</binding>
+				<!--<binding interface="com.google.groups.warszawajug.money.BankInfoRemote">
+					<ejb:outbound-endpoint />
+				</binding>-->
 			</component>
 			<outbound>
 				<multicasting-router>
@@ -113,6 +118,15 @@
 							<xm:object-to-xml-transformer/>
 						</transformers>
 					</file:outbound-endpoint>
+					<ftp:outbound-endpoint address="ftp://localhost/confirmations" 
+										   user="anonymous"
+										   password=""
+										   outputPattern="#[DATE]-#[COUNT].html">
+						<transformers>
+							<xm:object-to-xml-transformer/>
+							<!--<xm:xslt-transformer/>-->
+						</transformers>
+					</ftp:outbound-endpoint>
 				</multicasting-router>
 			</outbound>
 		</service>
