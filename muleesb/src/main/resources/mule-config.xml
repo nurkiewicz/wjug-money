@@ -118,9 +118,7 @@
 							<xm:object-to-xml-transformer/>
 						</transformers>
 					</file:outbound-endpoint>
-					<ftp:outbound-endpoint address="ftp://localhost/confirmations" 
-										   user="anonymous"
-										   password=""
+					<ftp:outbound-endpoint address="ftp://anonymous@localhost/confirmations"
 										   outputPattern="#[DATE]-#[COUNT].html">
 						<transformers>
 							<xm:object-to-xml-transformer/>
