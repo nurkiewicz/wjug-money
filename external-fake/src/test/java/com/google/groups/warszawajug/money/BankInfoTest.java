@@ -11,7 +11,7 @@ import static org.fest.assertions.Assertions.assertThat;
  */
 public class BankInfoTest {
 
-	private BankInfoRemote bankInfo;
+	private BankInfoService bankInfo;
 
 	@Before
 	public void setup() {

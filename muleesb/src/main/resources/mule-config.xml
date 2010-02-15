@@ -43,7 +43,12 @@
 
 	<pop3:connector name="Pop3Connector" checkFrequency="5000"/>
 
-	<!--<ejb:connector name="JBossConnector" />-->
+	<!--<ejb:connector name="JBossConnector"
+	               jndiInitialFactory="org.jboss.naming.NamingContextFactory"
+	               jndiProviderUrl="jnp://localhost:1099"
+	               jndiUrlPkgPrefixes="org.jnp.interfaces">
+		<spring:property name="securityPolicy" value="mule.policy"/>
+	</ejb:connector>-->
 
 	<custom-transformer name="spreadsheetToMoneyTransferListTransformer" class="com.blogspot.nurkiewicz.money.SpreadsheetToMoneyTransferListTransformer"/>
 
@@ -107,8 +112,18 @@
 				<binding interface="com.google.groups.warszawajug.money.CustomerWs">
 					<outbound-endpoint address="wsdl-cxf:http://localhost:8080/external-fake-0.0.1-SNAPSHOT/CustomerWsBean?wsdl"/>
 				</binding>
+				<binding interface="com.google.groups.warszawajug.money.BankInfoService">
+					<jms:outbound-endpoint
+							synchronous="true"
+							queue="BankInfo">
+					</jms:outbound-endpoint>
+				</binding>
 				<!--<binding interface="com.google.groups.warszawajug.money.BankInfoRemote">
-					<ejb:outbound-endpoint />
+					<ejb:outbound-endpoint
+							synchronous="true"
+							connector-ref="JBossConnector"
+							address="ejb://localhost:1099/BankInfo/remote"
+							method="getBankInfoByAccountNo"/>
 				</binding>-->
 			</component>
 			<outbound>
@@ -154,6 +169,13 @@
 					</jms:outbound-endpoint>
 				</pass-through-router>
 			</outbound>
+		</service>
+
+		<service name="FakeBankInfoQueueService">
+			<inbound>
+				<jms:inbound-endpoint queue="BankInfo"/>
+			</inbound>
+			<component class="com.google.groups.warszawajug.money.BankInfo"/>
 		</service>
 	</model>
 

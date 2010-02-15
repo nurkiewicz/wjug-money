@@ -96,17 +96,22 @@
 			<artifactId>geronimo-annotation_1.0_spec</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-		<!--<dependency>
+		<dependency>
 			<groupId>org.jboss.jbossas</groupId>
 			<artifactId>jboss-as-client</artifactId>
 			<version>5.1.0.GA</version>
+			<type>pom</type>
 			<exclusions>
 				<exclusion>
 					<groupId>org.jboss.slf4j</groupId>
 					<artifactId>slf4j-jboss-logging</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>cglib</groupId>
+					<artifactId>cglib</artifactId>
+				</exclusion>
 			</exclusions>
-		</dependency>-->
+		</dependency>
 		<dependency>
 			<groupId>org.apache.activemq</groupId>
 			<artifactId>activemq-core</artifactId>

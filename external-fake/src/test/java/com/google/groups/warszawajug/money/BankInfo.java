@@ -7,10 +7,8 @@ import java.util.Locale;
  * @author Tomasz Nurkiewicz
  * @since 2010-02-14, 21:16:17
  */
-@Stateless
-public class BankInfo implements BankInfoRemote {
+public class BankInfo implements BankInfoService {
 
-	@Override
 	public Bank getBankInfoByAccountNo(String accountNo) {
 		if(accountNo.startsWith("60"))
 			return new Bank("Bank of America", Locale.US);
