@@ -11,9 +11,9 @@ public class BankInfo implements BankInfoService {
 
 	public Bank getBankInfoByAccountNo(String accountNo) {
 		if(accountNo.startsWith("60"))
-			return new Bank("Bank of America", Locale.US);
+			return new Bank("Bank of America", "USA");
 		else
-			return new Bank("Swiss National Bank", new Locale("de", "CH"));
+			return new Bank("Swiss National Bank", "Switzerland");
 	}
 
 }

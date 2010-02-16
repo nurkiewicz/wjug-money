@@ -12,9 +12,9 @@ import java.util.Locale;
 public class Bank implements Serializable {
 
 	private final String name;
-	private final Locale country;
+	private final String country;
 
-	public Bank(String name, Locale country) {
+	public Bank(String name, String country) {
 		this.name = name;
 		this.country = country;
 	}
@@ -23,7 +23,7 @@ public class Bank implements Serializable {
 		return name;
 	}
 
-	public Locale getCountry() {
+	public String getCountry() {
 		return country;
 	}
 
@@ -31,7 +31,7 @@ public class Bank implements Serializable {
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).
 				append("name", name).
-				append("country", country.getDisplayCountry(Locale.US)).
+				append("country", country).
 				toString();
 	}
 }

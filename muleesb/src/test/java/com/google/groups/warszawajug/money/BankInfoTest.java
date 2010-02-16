@@ -28,7 +28,7 @@ public class BankInfoTest {
 
 		//then
 		assertThat(bank).isNotNull();
-		assertThat(bank.getCountry().getCountry()).isEqualTo("CH");
+		assertThat(bank.getCountry()).isEqualTo("Switzerland");
 	}
 
 	@Test
@@ -41,7 +41,7 @@ public class BankInfoTest {
 
 		//then
 		assertThat(bank).isNotNull();
-		assertThat(bank.getCountry().getCountry()).isEqualTo("US");
+		assertThat(bank.getCountry()).isEqualTo("USA");
 	}
 
 }
