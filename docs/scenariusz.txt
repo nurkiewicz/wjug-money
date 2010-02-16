@@ -13,11 +13,10 @@ Po drugiej znajduje się fake, który odbiera komunikat wysłany w pkcie 5. z Mo
 8. W zależności od typu odpowiedzi (OK/Błąd) trafia do innych komponentów. Jeśli OK -> 10.
 9. Wysłanie na e-mail informacji o błędzie (odpowiedź będzie zawierała dane żądania). Koniec.
 10. Wieloetapowy proces przetwarzający żądanie:
-  a) Wywołanie WS i odczyt odpowiedzi (synchr.) - np. uzupełnienie danych klienta.
-  b) Wywołanie EJB jw. - pobranie danych banku.
-  c) Umieszczenie żądania w jednej kolejce JMS i oczekiwanie na odpowiedź w innej. Atrybut JMSCorrelationId jest ustawiony na JMSMessageId żądania (korelacja) - fizyczne wykonanie przelewu.
-     Wysłanie do kolejki TransferExec i odebranie odpowiedzi z TransferExecAck
-  d) Błąd na którymkolwiek etapie kończy się e-mailem, e-mail również w przypadku sukcesu
-11. Na sam koniec MoneyTransfer jest konwertowany -> XML -> HTML (XSLT) i przelew w postaci strony jest wrzucany na serwer FTP.
+  a) Wywołanie WS i odczyt odpowiedzi (synchr.) - np. uzupełnienie danych klienta na podstawie numeru konta.
+  b) Umieszczenie żądania w jednej kolejce JMS i oczekiwanie na odpowiedź w innej (JMSReplyTo). Atrybut JMSCorrelationId jest ustawiony na JMSMessageId żądania (korelacja).
+     Np. pobranie informacji o banku (XML lub obiekt) na podstawie numeru konta.
+  c) Błąd na którymkolwiek etapie kończy się e-mailem, e-mail również w przypadku sukcesu
+11. Na koniec MoneyTransfer jest konwertowany -> XML -> HTML (XSLT) i przelew w postaci strony HTML jest wrzucany na serwer FTP.
 
-Ponadto usługa z puktów 1-3 wystawiona za pomocą e-maila (wysłanie e-maila do systemu, który jest parsowany, dalej pkt 4.) oraz interfejsu WWW (szyna wystawia interfejs HTTP/REST, którego można użyć jako akcję formularza HTML). Inny pomysł to szyna wystawiająca cały interfejs WWW (łańcuch transformacji POJO -> XML -> HTML (XSLT)).
+Ponadto usługa z puktów 1-3 wystawiona za pomocą e-maila (wysłanie e-maila do systemu, który jest parsowany, dalej pkt 4.) oraz interfejsu WWW (szyna wystawia interfejs HTTP/REST, którego można użyć jako akcję formularza HTML).
