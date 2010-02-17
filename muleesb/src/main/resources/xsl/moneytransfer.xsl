@@ -9,7 +9,7 @@
 		<h2>To:</h2>
 		<h4><xsl:value-of select="accountOwner/name"/>, <xsl:value-of select="accountOwner/country"/></h4>
 		<b>Street</b>: <xsl:value-of select="accountOwner/street"/><br/>
-		<b>Zip/city</b>: <xsl:value-of select="accountOwner/postalCode"/> <xsl:value-of select="accountOwner/city"/><br/>
+		<b>Zip/city</b>: <xsl:value-of select="accountOwner/postalCode"/>, <xsl:value-of select="accountOwner/city"/><br/>
 		<hr/>
 		<h2>Account: <xsl:value-of select="accountNo"/></h2>
 		<b>Bank</b>: <xsl:value-of select="ownerBank/name"/> (<i><xsl:value-of select="ownerBank/country"/></i>)<br/>
