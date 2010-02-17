@@ -70,23 +70,8 @@
 						<transformers>
 							<xm:object-to-xml-transformer/>
 							<custom-transformer class="org.mule.transport.jms.transformers.ObjectToJMSMessage"/>
-							<!--<message-properties-transformer>
-								<delete-message-property key="Content-Transfer-Encoding"/>
-								<delete-message-property key="Content-Type"/>
-								<delete-message-property key="Delivered-To"/>
-							</message-properties-transformer>-->
 						</transformers>
 					</jms:outbound-endpoint>
-					<!--<smtp:outbound-endpoint from="moneytransfer@localhost"
-											to="tomek@localhost"
-											subject="Money transfer successfully loaded (#[mule:message.correlationId])"
-											host="localhost"
-											port="25">
-						<transformers>
-							<object-to-string-transformer/>
-							<custom-transformer class="org.mule.transport.email.transformers.ObjectToMimeMessage"/>
-						</transformers>
-					</smtp:outbound-endpoint>-->
 				</list-message-splitter-router>
 			</outbound>
 		</service>
@@ -126,6 +111,16 @@
 							<xm:xslt-transformer xsl-file="xsl/moneytransfer.xsl"/>
 						</transformers>
 					</ftp:outbound-endpoint>
+					<smtp:outbound-endpoint from="moneytransfer@localhost"
+											to="tomek@localhost"
+											subject="Money transfer processed"
+											host="localhost"
+											port="25">
+						<transformers>
+							<object-to-string-transformer/>
+							<custom-transformer class="org.mule.transport.email.transformers.ObjectToMimeMessage"/>
+						</transformers>
+					</smtp:outbound-endpoint>
 				</multicasting-router>
 			</outbound>
 		</service>
