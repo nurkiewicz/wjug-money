@@ -14,6 +14,8 @@
 	  xmlns:ejb="http://www.mulesource.org/schema/mule/ejb/2.2"
 	  xmlns:cxf="http://www.mulesource.org/schema/mule/cxf/2.2"
 	  xmlns:ftp="http://www.mulesource.org/schema/mule/ftp/2.2"
+	  xmlns:servlet="http://www.mulesource.org/schema/mule/servlet/2.2"
+	  xmlns:http="http://www.mulesource.org/schema/mule/http/2.2"
 	  xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
        http://www.mulesource.org/schema/mule/core/2.2 http://www.mulesource.org/schema/mule/core/2.2/mule.xsd
@@ -29,6 +31,9 @@
        http://www.mulesource.org/schema/mule/ejb/2.2 http://www.mulesource.org/schema/mule/ejb/2.2/mule-ejb.xsd
        http://www.mulesource.org/schema/mule/cxf/2.2 http://www.mulesource.org/schema/mule/cxf/2.2/mule-cxf.xsd
        http://www.mulesource.org/schema/mule/ftp/2.2 http://www.mulesource.org/schema/mule/ftp/2.2/mule-ftp.xsd
+       http://www.mulesource.org/schema/mule/servlet/2.2 http://www.mulesource.org/schema/mule/servlet/2.2/mule-servlet.xsd
+       http://www.mulesource.org/schema/mule/servlet/2.2 http://www.mulesource.org/schema/mule/servlet/2.2/mule-servlet.xsd
+       http://www.mulesource.org/schema/mule/http/2.2 http://www.mulesource.org/schema/mule/http/2.2/mule-http.xsd
        ">
 
 	<spring:beans>
@@ -63,7 +68,14 @@
 						<transformer ref="csvToTransferListTransformer"/>
 					</transformers>
 				</pop3:inbound-endpoint>
+				<http:inbound-endpoint host="localhost" port="5005" path="services/money">
+					<transformers>
+						<custom-transformer class="org.mule.transport.http.transformers.HttpRequestBodyToParamMap"/>
+						<custom-transformer class="com.blogspot.nurkiewicz.money.HttpRequestMapToMoneyTransferTransformer"/>
+					</transformers>
+				</http:inbound-endpoint>
 			</inbound>
+
 			<outbound>
 				<list-message-splitter-router>
 					<jms:outbound-endpoint queue="MoneyTransfers">
