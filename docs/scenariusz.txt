@@ -1,14 +1,13 @@
 System zarządza masową realizacją przekazów pieniężnych.
 
 1. Użytkownik (np. pracownik dz. finansów) umieszcza w pewnym katalogu plik Excel z danymi przelewów - jedna linia to jeden przelew
-2. Szyna "chwyta" plik i odczytuje go
+2. Szyna odnajduje plik i odczytuje go
 3. Własny transformer zamienia strumień bajtów na listę obiektów domenowych (MoneyTransfer).
 4. Lista jest rozdzielana (splitter) i każdy jej element (MoneyTransfer) jest serializowany do XML (format dowolny)
-  a) (opcjonalnie) zapisanie w bazie danych przelewu celem późniejszego odczytu gdy przyjdzie odpowiedź?
 5. Stringi z XMLami trafiają do kolejki JMS MoneyTransfers po jednym komunikacie na przekaz. Koniec pierwszej części.
 
 6. ESB wczytuje odpowiedź (też XML, format dowolny) z kolejki JMS MoneyTransfersAck. Jeden request z pktu 5. - jedna odpowiedź.
-Po drugiej znajduje się fake, który odbiera komunikat wysłany w pkcie 5. z MoneyTransfers, przetwarza go ze sporym opóźnieniem i odsyła odpowiedź do kolejki JMS MoneyTransfersAck.
+Po drugiej stronie znajduje się fake, który odbiera komunikat wysłany w pkcie 5. z MoneyTransfers, przetwarza go ze sporym opóźnieniem i odsyła odpowiedź do kolejki JMS MoneyTransfersAck.
 7. ESB parsuje odpowiedź i ją zwraca.
 8. W zależności od typu odpowiedzi (OK/Błąd) trafia do innych komponentów. Jeśli OK -> 10.
 9. Wysłanie na e-mail informacji o błędzie (odpowiedź będzie zawierała dane żądania). Koniec.
