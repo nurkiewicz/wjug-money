@@ -14,17 +14,17 @@ public class FakeMoneyTransferProcessor {
 
 	private long delay = 1000;
 
-	public Object process(MoneyTransfer moneyTransfer) {
+	public TransferResponse process(MoneyTransfer moneyTransfer) {
 		log.info("Processing: {}", moneyTransfer);
 		try {
 			Thread.sleep(delay);
 		} catch(InterruptedException e) {
 			log.warn("", e);
 		}
-		log.info("Processing done: {}", moneyTransfer);
-		if(moneyTransfer.getAccountNo().startsWith("99"))
-			return "Invalid account no: " + moneyTransfer.getAccountNo();
-		return moneyTransfer;
+		final boolean validTransfer = !moneyTransfer.getAccountNo().startsWith("99");
+		final TransferResponse response = new TransferResponse(validTransfer, moneyTransfer);
+		log.info("Processing done: {}", response);
+		return response;
 	}
 
 	public void setDelay(long delay) {

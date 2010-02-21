@@ -85,7 +85,14 @@
 						<xm:xml-to-object-transformer/>
 					</transformers>
 				</jms:inbound-endpoint>
+				<selective-consumer-router>
+					<xm:jxpath-filter pattern="success" expectedValue="true"/>
+				</selective-consumer-router>
+				<forwarding-catch-all-strategy>
+					<stdio:outbound-endpoint system="ERR"/>
+				</forwarding-catch-all-strategy>
 			</inbound>
+
 			<component>
 				<spring-object bean="transferHandler"/>
 				<binding interface="com.google.groups.warszawajug.money.CustomerWs">
@@ -98,6 +105,7 @@
 					</jms:outbound-endpoint>
 				</binding>
 			</component>
+
 			<outbound>
 				<multicasting-router>
 					<file:outbound-endpoint path="target/mule/confirmations" outputPattern="#[DATE]-#[COUNT].xml">

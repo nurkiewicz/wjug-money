@@ -14,7 +14,8 @@ public class TransferHandler {
 	private CustomerWs customerWs;
 	private BankInfoService bankInfo;
 
-	public MoneyTransfer handle(MoneyTransfer transfer) {
+	public MoneyTransfer handle(TransferResponse response) {
+		MoneyTransfer transfer = response.getMoneyTransfer();
 		log.info("Handling transfer: {}", transfer);
 		final AccountOwner accountOwner = customerWs.getAccountOwnerByAccountNo(transfer.getAccountNo());
 		log.debug("Account owner: {}", accountOwner);
