@@ -139,37 +139,4 @@
 
 	</model>
 
-	<model name="FakeModel">
-		<service name="FakeMoneyTransferQueueService">
-			<inbound>
-				<jms:inbound-endpoint queue="MoneyTransfers">
-					<transformers>
-						<custom-transformer class="org.mule.transport.jms.transformers.JMSMessageToObject"/>
-						<xm:xml-to-object-transformer/>
-					</transformers>
-				</jms:inbound-endpoint>
-			</inbound>
-			<component>
-				<spring-object bean="fakeMoneyTransferProcessor"/>
-			</component>
-			<outbound>
-				<pass-through-router>
-					<jms:outbound-endpoint queue="MoneyTransfersAck">
-						<transformers>
-							<xm:object-to-xml-transformer/>
-							<custom-transformer class="org.mule.transport.jms.transformers.ObjectToJMSMessage"/>
-						</transformers>
-					</jms:outbound-endpoint>
-				</pass-through-router>
-			</outbound>
-		</service>
-
-		<service name="FakeBankInfoQueueService">
-			<inbound>
-				<jms:inbound-endpoint queue="BankInfo"/>
-			</inbound>
-			<component class="com.google.groups.warszawajug.money.BankInfo"/>
-		</service>
-	</model>
-
 </mule>

@@ -18,7 +18,7 @@ public class MuleStartup {
 
 	public static void main(String[] args) {
 		try {
-			final ConfigurationBuilder configurationBuilder = new SpringXmlConfigurationBuilder("mule-config.xml");
+			final ConfigurationBuilder configurationBuilder = new SpringXmlConfigurationBuilder(new String[] {"mule-config.xml", "fakes-mule-config.xml"});
 			MuleContext context = new DefaultMuleContextFactory().createMuleContext(configurationBuilder);
 			context.start();
 		} catch (Exception e) {
