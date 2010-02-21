@@ -1,4 +1,7 @@
-package com.google.groups.warszawajug.money;
+package com.blogspot.nurkiewicz.money;
+
+import com.google.groups.warszawajug.money.Bank;
+import com.google.groups.warszawajug.money.BankInfoService;
 
 import javax.ejb.Stateless;
 import java.util.Locale;

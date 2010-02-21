@@ -56,7 +56,7 @@
 			<inbound>
 				<jms:inbound-endpoint queue="BankInfo"/>
 			</inbound>
-			<component class="com.google.groups.warszawajug.money.BankInfo"/>
+			<component class="com.blogspot.nurkiewicz.money.BankInfo"/>
 		</service>
 	</model>
 
