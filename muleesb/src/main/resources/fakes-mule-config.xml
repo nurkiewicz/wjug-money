@@ -3,36 +3,25 @@
 	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	  xmlns:spring="http://www.springframework.org/schema/beans"
 	  xmlns:stdio="http://www.mulesource.org/schema/mule/stdio/2.2"
-	  xmlns:vm="http://www.mulesource.org/schema/mule/vm/2.2"
 	  xmlns:smtp="http://www.mulesource.org/schema/mule/smtp/2.2"
-	  xmlns:xmpp="http://www.mulesource.org/schema/mule/xmpp/2.2"
 	  xmlns:file="http://www.mulesource.org/schema/mule/file/2.2"
-	  xmlns:test="http://www.mulesource.org/schema/mule/test/2.2"
 	  xmlns:jms="http://www.mulesource.org/schema/mule/jms/2.2"
 	  xmlns:xm="http://www.mulesource.org/schema/mule/xml/2.2"
 	  xmlns:pop3="http://www.mulesource.org/schema/mule/pop3/2.2"
-	  xmlns:ejb="http://www.mulesource.org/schema/mule/ejb/2.2"
 	  xmlns:cxf="http://www.mulesource.org/schema/mule/cxf/2.2"
 	  xmlns:ftp="http://www.mulesource.org/schema/mule/ftp/2.2"
-	  xmlns:servlet="http://www.mulesource.org/schema/mule/servlet/2.2"
 	  xmlns:http="http://www.mulesource.org/schema/mule/http/2.2"
 	  xsi:schemaLocation="
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
        http://www.mulesource.org/schema/mule/core/2.2 http://www.mulesource.org/schema/mule/core/2.2/mule.xsd
        http://www.mulesource.org/schema/mule/stdio/2.2 http://www.mulesource.org/schema/mule/stdio/2.2/mule-stdio.xsd
-       http://www.mulesource.org/schema/mule/vm/2.2 http://www.mulesource.org/schema/mule/vm/2.2/mule-vm.xsd
        http://www.mulesource.org/schema/mule/smtp/2.2 http://www.mulesource.org/schema/mule/smtp/2.2/mule-smtp.xsd
-       http://www.mulesource.org/schema/mule/xmpp/2.2 http://www.mulesource.org/schema/mule/xmpp/2.2/mule-xmpp.xsd
        http://www.mulesource.org/schema/mule/file/2.2 http://www.mulesource.org/schema/mule/file/2.2/mule-file.xsd
-       http://www.mulesource.org/schema/mule/test/2.2 http://www.mulesource.org/schema/mule/test/2.2/mule-test.xsd
        http://www.mulesource.org/schema/mule/jms/2.2 http://www.mulesource.org/schema/mule/jms/2.2/mule-jms.xsd
        http://www.mulesource.org/schema/mule/xml/2.2 http://www.mulesource.org/schema/mule/xml/2.2/mule-xml.xsd
        http://www.mulesource.org/schema/mule/pop3/2.2 http://www.mulesource.org/schema/mule/pop3/2.2/mule-pop3.xsd
-       http://www.mulesource.org/schema/mule/ejb/2.2 http://www.mulesource.org/schema/mule/ejb/2.2/mule-ejb.xsd
        http://www.mulesource.org/schema/mule/cxf/2.2 http://www.mulesource.org/schema/mule/cxf/2.2/mule-cxf.xsd
        http://www.mulesource.org/schema/mule/ftp/2.2 http://www.mulesource.org/schema/mule/ftp/2.2/mule-ftp.xsd
-       http://www.mulesource.org/schema/mule/servlet/2.2 http://www.mulesource.org/schema/mule/servlet/2.2/mule-servlet.xsd
-       http://www.mulesource.org/schema/mule/servlet/2.2 http://www.mulesource.org/schema/mule/servlet/2.2/mule-servlet.xsd
        http://www.mulesource.org/schema/mule/http/2.2 http://www.mulesource.org/schema/mule/http/2.2/mule-http.xsd
        ">
 
