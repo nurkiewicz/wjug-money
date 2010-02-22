@@ -4,11 +4,13 @@ import com.google.groups.warszawajug.money.MoneyTransfer;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import java.io.Serializable;
+
 /**
  * @author Tomasz Nurkiewicz
  * @since 2010-02-21, 16:49:36
  */
-public class TransferResponse {
+public class TransferResponse implements Serializable {
 
 	private boolean success;
 

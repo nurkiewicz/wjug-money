@@ -89,7 +89,7 @@
 					<xm:jxpath-filter pattern="success" expectedValue="true"/>
 				</selective-consumer-router>
 				<forwarding-catch-all-strategy>
-					<stdio:outbound-endpoint system="ERR"/>
+					<jms:outbound-endpoint queue="Errors"/>
 				</forwarding-catch-all-strategy>
 			</inbound>
 
