@@ -12,7 +12,6 @@
 	</properties>
 	<modules>
 		<module>muleesb</module>
-		<module>servicemix</module>
 		<module>api</module>
 		<module>external-fake</module>
 	</modules>
